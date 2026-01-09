@@ -1,0 +1,56 @@
+
+version: '3.8'
+
+services:
+ db:
+  image: mysql:8.0
+  container_name: sports_db
+  # Named volume for reliable data persistence without permission issues
+  volumes:
+   - mysql_data:/var/lib/mysql
+  environment:
+   MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+   MYSQL_DATABASE: ${DB_NAME}
+  ports:
+   - "3307:3306" # Connect from your PC via 3307
+  healthcheck:
+   # Password is included in ping to ensure healthcheck doesn't fail
+   test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+   interval: 5s
+   timeout: 5s
+   retries: 10
+  networks:
+   - sports-network
+ 
+ app:
+  build: .
+  container_name: sports_backend
+  ports:
+   - "8080:8080"
+  depends_on:
+   db:
+    condition: service_healthy # Backend waits until MySQL is fully ready
+  environment:
+   # Connection settings
+   SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${DB_NAME}?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+   SPRING_DATASOURCE_USERNAME: root
+   SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+   
+   # Hibernate & JPA Settings
+   SPRING_JPA_HIBERNATE_DDL_AUTO: update
+   SPRING_JPA_SHOW_SQL: "true"
+   # Explicit dialect prevents the "Unable to determine Dialect" error on startup
+   SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+   
+   # Hikari Connection Pool Optimization
+   SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT: 60000
+  networks:
+   - sports-network
+
+networks:
+ sports-network:
+  driver: bridge
+
+# Define the named volume used by the db service
+volumes:
+ mysql_data:

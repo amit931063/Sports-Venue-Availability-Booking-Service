@@ -1,0 +1,111 @@
+{
+  "info": {
+    "name": "Stapubox Sports Booking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Sports",
+      "item": [
+        {
+          "name": "Add New Sport",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Soccer\",\n    \"sportCode\": \"soccer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/api/sports" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Venues",
+      "item": [
+        {
+          "name": "Create Venue",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Stapubox Arena\",\n    \"location\": \"Hisar\",\n    \"sportCode\": \"soccer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/api/venues" }
+          }
+        },
+        {
+          "name": "List All Venues",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/venues" }
+          }
+        },
+        {
+          "name": "Search Available Venues",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/venues/available?sport=soccer&start=2026-02-01T00:00:00&end=2026-02-02T00:00:00",
+              "query": [
+                { "key": "sport", "value": "soccer" },
+                { "key": "start", "value": "2026-02-01T00:00:00" },
+                { "key": "end", "value": "2026-02-02T00:00:00" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Slots",
+      "item": [
+        {
+          "name": "Add Slot to Venue",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"startTime\": \"2026-02-01T10:00:00\",\n    \"endTime\": \"2026-02-01T11:00:00\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/api/venues/1/slots" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"slotId\": 1,\n    \"userName\": \"Rahul Sharma\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "http://localhost:8080/api/bookings" }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "http://localhost:8080/api/bookings/1/cancel" }
+          }
+        }
+      ]
+    }
+  ]
+}
