@@ -29,17 +29,24 @@
 └── README.md             # Fully documented assumptions & APIs
 
 ## Assumptions & Logic
+
 Booking Rule: Each booking corresponds to exactly one slot (1:1).
+
 Immutability: Once a slot is booked, the time range is locked and cannot be edited.
+
 Conflict Prevention: Uses Pessimistic Locking (SELECT FOR UPDATE) to handle high-traffic concurrency.
+
 External Integration: Sports are dynamically validated against stapubox.com/sportslist/.
 
 -🚀 1. Getting Started
 Prerequisites
+
 Docker and Docker Compose installed.
+
 Postman (for testing the provided API collection).
 
  ## Installation & Setup
+ 
 Clone the repository and navigate to the project root.
 
 Launch the stack:
@@ -49,6 +56,7 @@ docker-compose up --build
 
 
 🛠️ Mandatory API List
+
 A. Venue & Sport Management
 
 POST /api/sports: Sync/Register sports from the mandatory external API (https://stapubox.com/sportslist/).
